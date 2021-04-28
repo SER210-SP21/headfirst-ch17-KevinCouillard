@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Kevin Couillard
- * SER210 Chapter 15 Demo
+ * SER210 Chapter 16 Demo
  * Starbuzz Top Level Activity
  * 4/27/21
  */

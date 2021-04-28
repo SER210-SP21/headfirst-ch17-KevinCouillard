@@ -1,13 +1,18 @@
 package edu.quinnipiac.ser210.starbuzz;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Kevin Couillard
- * SER210 Chapter 15 Demo
+ * SER210 Chapter 16 Demo
  * Starbuzz Drink Activity
  * 4/27/21
  */
@@ -20,16 +25,38 @@ public class DrinkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drink);
 
         int drinkId = (Integer)getIntent().getExtras().get(EXTRA_DRINKID);
-        Drink drink = Drink.drinks[drinkId];
 
-        TextView name = (TextView) findViewById(R.id.name);
-        name.setText(drink.getName());
+        SQLiteOpenHelper starbuzzDatabaseHelper = new StarbuzzDatabaseHelper(this);
+        try {
+            SQLiteDatabase db = starbuzzDatabaseHelper.getReadableDatabase();
+            Cursor cursor = db.query ("DRINK",
+                    new String[] {"NAME", "DESCRIPTION", "IMAGE_RESOURCE_ID"},
+                    "_id = ?",
+                    new String[] {Integer.toString(drinkId)},
+                    null, null,null);
+            //Move to the first record in the Cursor
+            if (cursor.moveToFirst()) {
+                //Get the drink details from the cursor
+                String nameText = cursor.getString(0);
+                String descriptionText = cursor.getString(1);
+                int photoId = cursor.getInt(2);
 
-        TextView description = (TextView) findViewById(R.id.description);
-        description.setText(drink.getDescription());
+                //Populate the drink name
+                TextView name = (TextView)findViewById(R.id.name);
+                name.setText(nameText);
 
-        ImageView photo = (ImageView) findViewById(R.id.photo);
-        photo.setImageResource(drink.getImageResourceId());
-        photo.setContentDescription(drink.getName());
+                //Populate the drink description
+                TextView description = (TextView)findViewById(R.id.description);
+                description.setText(descriptionText);
+
+                //Populate the drink image
+                ImageView photo = (ImageView)findViewById(R.id.photo);
+                photo.setImageResource(photoId);
+                photo.setContentDescription(nameText);
+            }
+        } catch(SQLiteException e) {
+            Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Kevin Couillard
- * SER210 Chapter 15 Demo
+ * SER210 Chapter 16 Demo
  * Starbuzz Database Helper
  * 4/27/21
  */

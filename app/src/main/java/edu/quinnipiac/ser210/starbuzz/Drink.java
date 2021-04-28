@@ -2,7 +2,7 @@ package edu.quinnipiac.ser210.starbuzz;
 
 /**
  * Kevin Couillard
- * SER210 Chapter 15 Demo
+ * SER210 Chapter 16 Demo
  * Starbuzz Drink class
  * 4/27/21
  */
